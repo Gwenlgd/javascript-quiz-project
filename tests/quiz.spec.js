@@ -303,7 +303,7 @@ describe("Quiz", () => {
       // 1. Instantiate a new Quiz object
       const quiz = new Quiz([], 60, 60);
       // 2. Check if the .filterQuestionsByDifficulty is a function
-      expect(typeof filterQuestionsByDifficulty).toBe('function');
+      expect(typeof quiz.filterQuestionsByDifficulty).toBe('function');
     });
 
     it("should receive 1 argument (difficulty)", () => {
@@ -356,7 +356,20 @@ describe("Quiz", () => {
       // 3. Call the `filterQuestionsByDifficulty()` method with a number between 1 and 3 as a 1st argument.
       quiz.filterQuestionsByDifficulty(2);
       // 4. Check if the questions array has been filtered correctly
-      const filteredQuestions = quiz.questions;
+      expect(quiz.questions).toEqual([
+        {
+          text: "Question 2",
+          choices: ["d", "e", "f"],
+          answer: "d",
+          difficulty: 2,
+        },
+        {
+          text: "Question 3",
+          choices: ["g", "h", "i"],
+          answer: "g",
+          difficulty: 2,
+        },
+      ])
     });
 
     it("should not change the 'questions' array if the 1st argument is not a number between 1 and 3", () => {
@@ -392,8 +405,7 @@ describe("Quiz", () => {
       const originalQuestions = [...quiz.questions];
 
       // 3. Call the `filterQuestionsByDifficulty()` method with a string as a 1st argument (wrong data type).
-      quiz.filterQuestionsByDifficulty("invalid_argument");
-
+      quiz.filterQuestionsByDifficulty(5)
       // 4. Check if the questions array is still the same as the original (it hasn't been filtered)
       expect(quiz.questions).toEqual(originalQuestions);
 
