@@ -35,4 +35,5 @@ class Quiz {
       return true;
     }
   }
+
 }
