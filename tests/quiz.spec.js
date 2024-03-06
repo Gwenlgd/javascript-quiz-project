@@ -423,23 +423,6 @@ describe("Quiz", () => {
   // ****************************************************************************************************
 
   describe("averageDifficulty() method", () => {
-    it("should use the 'reduce()' array method on the 'questions' array", () => {
-      // Instantiate a new Quiz object
-      const quiz = new Quiz([], "test", 60);
-      // Set up a spy on the 'reduce()' array method to track calls to it
-      const reduceSpy = spyOn(quiz.questions, "reduce");
-
-      // Call the 'averageDifficulty()' method
-      quiz.averageDifficulty();
-
-      // Check if the 'reduce()' array method was called on the 'questions' array
-      expect(reduceSpy).toHaveBeenCalled();
-      // Check that the 'reduce()' array method was called only once
-      expect(reduceSpy).toHaveBeenCalledTimes(1);
-      // Check that the 'reduce()' array method was called correctly, with a function as its 1st argument and optional 2nd argument
-      expect(reduceSpy.calls.allArgs()[0][0]).toEqual(jasmine.any(Function));
-    });
-
 
     // ****************************************************************************************************
     // DAY 2: 'averageDifficulty()' method
@@ -478,6 +461,23 @@ describe("Quiz", () => {
       // 2. Check that the averageDifficulty() method takes no arguments
       expect(() => quiz.averageDifficulty()).not.toThrow();
 
+    });
+
+    it("should use the 'reduce()' array method on the 'questions' array", () => {
+      // Instantiate a new Quiz object
+      const quiz = new Quiz([], "test", 60);
+      // Set up a spy on the 'reduce()' array method to track calls to it
+      const reduceSpy = spyOn(quiz.questions, "reduce");
+
+      // Call the 'averageDifficulty()' method
+      quiz.averageDifficulty();
+
+      // Check if the 'reduce()' array method was called on the 'questions' array
+      expect(reduceSpy).toHaveBeenCalled();
+      // Check that the 'reduce()' array method was called only once
+      expect(reduceSpy).toHaveBeenCalledTimes(1);
+      // Check that the 'reduce()' array method was called correctly, with a function as its 1st argument and optional 2nd argument
+      expect(reduceSpy.calls.allArgs()[0][0]).toEqual(jasmine.any(Function));
     });
 
     it("should return the average difficulty of the questions in the quiz", () => {

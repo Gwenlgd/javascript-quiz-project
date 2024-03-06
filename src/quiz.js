@@ -32,6 +32,7 @@ class Quiz {
       this.correctAnswers++;
     }
   }
+
   hasEnded() {
     // ? What's up? maybe add a -1 somewhere
     if (this.currentQuestionIndex < this.questions.length) {
@@ -40,6 +41,7 @@ class Quiz {
       return true;
     }
   }
+
   filterQuestionsByDifficulty(difficulty) {
     if (typeof difficulty !== 'number' || difficulty > 3 || difficulty < 1) {
       return
@@ -50,21 +52,11 @@ class Quiz {
 
   }
 
+  averageDifficulty() {
+    const sum = this.questions.reduce((acc, question) => {
+      return acc + question.difficulty;
+    }, 0);
 
-  // filterQuestionsByDifficulty(difficulty) {
-
-  //   return this.questions.filter((difficulty) => {
-  //     let showQuestion = []
-  //     if (this.questions.difficulty === 1) {
-  //       showQuestion = this.quiz.difficulty === 1
-  //     } else if (this.questions.difficulty === 2) {
-  //       showQuestion = this.quiz.difficulty === 2
-  //     } else if (this.questions.difficulty === 3) {
-  //       showQuestion = this.quiz.difficulty === 3
-  //     } else {
-  //       return this.questions
-  //     }
-  //     return showQuestion
-  //   })
-  // }
-}
+    return sum / this.questions.length;
+  }
+};
