@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const questionContainer = document.querySelector("#question");
   const choiceContainer = document.querySelector("#choices");
   const nextButton = document.querySelector("#nextButton");
+  const restartButton = document.querySelector("#restartButton");
+
 
   // End view elements
   const resultContainer = document.querySelector("#result");
@@ -54,8 +56,41 @@ document.addEventListener("DOMContentLoaded", () => {
   timeRemainingContainer.innerText = `${minutes}:${seconds}`;
 
   // Show first question
-  showQuestion();
 
+  function createShowQuestion(questionText, choices, currentQuestionIndex, totalQuestions) {
+    const questionElement = document.getElementById('question');
+    questionElement.textContent = questionText;
+
+    const progressBar = document.getElementById('progressBar');
+    const progressWidth = ((currentQuestionIndex + 1) / totalQuestions) * 100;
+    progressBar.style.width = `${progressWidth}%`;
+
+    const questionCountElement = document.getElementById('questionCount');
+    questionCountElement.textContent = `Question ${currentQuestionIndex + 1} of ${totalQuestions}`;
+
+
+    const choicesContainer = document.getElementById('choices');
+    choicesContainer.innerHTML = '';
+
+    choices.forEach((choice, index) => {
+      const choiceElement = document.createElement('li');
+
+      const radioInput = document.createElement('input');
+      radioInput.type = 'radio';
+      radioInput.name = 'choice';
+      radioInput.id = `choice-${index}`;
+      radioInput.value = choice;
+
+      const label = document.createElement('label');
+      label.setAttribute("for", `choice-${index}`);
+      label.textContent = choice;
+
+      choiceElement.appendChild(radioInput);
+      choiceElement.appendChild(label);
+
+      choicesContainer.appendChild(choiceElement);
+    });
+  }
 
   /************  TIMER  ************/
 
@@ -99,25 +134,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. Show the question
     // Update the inner text of the question container element and show the question text
 
-    const questionElement = document.getElementById('question');
-    questionElement.textContent = question.text;
-    console.log(question);
-
+    createShowQuestion(questionText, choices, currentQuestionIndex, totalQuestions);
     // 2. Update the green progress bar
     // Update the green progress bar (div#progressBar) width so that it shows the percentage of questions answered
-    // This value is hardcoded as a placeholder
 
-    // ?Needed?
-    const currentQuestionIndex = quiz.currentQuestionIndex
-    const totalQuestions = questions.length
-    const progressWidth = ((currentQuestionIndex + 1) / totalQuestions) * 100;
-    progressBar.style.width = `${progressWidth}%`;
+    progressBar.style.width = `65%`; // This value is hardcoded as a placeholder
+
+
 
     // 3. Update the question count text
     // Update the question count (div#questionCount) show the current question out of total questions
 
-    const questionCountElement = document.getElementById('questionCount');
-    questionCountElement.textContent = `Question ${currentQuestionIndex + 1} of ${totalQuestions}`;
+    questionCount.innerText = `Question 1 of 10`; //  This value is hardcoded as a placeholder
+
 
 
     // 4. Create and display new radio input element with a label for each choice.
@@ -126,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Each choice should be displayed as a radio input element with a label:
     /*
         <input type="radio" name="choice" value="CHOICE TEXT HERE">
-        <label for= >CHOICE TEXT HERE</label>
+        <label>CHOICE TEXT HERE</label>
       <br>
     */
     // Hint 1: You can use the `document.createElement()` method to create a new element.
@@ -134,64 +163,64 @@ document.addEventListener("DOMContentLoaded", () => {
     // Hint 3: You can use the `element.appendChild()` method to append an element to the choices container.
     // Hint 4: You can use the `element.innerText` property to set the inner text of an element.
 
-
-    question.choices.forEach((choice, index) => {
-      const choiceElement = document.createElement('li');
-
-      const radioInput = document.createElement('input');
-      radioInput.type = 'radio';
-      radioInput.name = 'choice';
-      radioInput.id = `choice-${index}`;
-      radioInput.value = choice;
-
-      const label = document.createElement('label');
-      label.setAttribute("for", `choice-${index}`);
-      label.textContent = choice;
-
-      choiceElement.appendChild(radioInput);
-      choiceElement.appendChild(label);
-
-      choiceContainer.appendChild(choiceElement);
-    });
-
   }
 
 
 
   function nextButtonHandler() {
     let selectedAnswer; // A variable to store the selected answer value
+
+
+
+    // YOUR CODE HERE:
+    //
+    // 1. Get all the choice elements. You can use the `document.querySelectorAll()` method.
     const choiceElements = document.querySelectorAll('input[name="choice"]')
+
+    // 2. Loop through all the choice elements and check which one is selected
+    // Hint: Radio input elements have a property `.checked` (e.g., `element.checked`).
+    //  When a radio input gets selected the `.checked` property will be set to true.
+    //  You can use check which choice was selected by checking if the `.checked` property is true.
+    // 3. If an answer is selected (`selectedAnswer`), check if it is correct and move to the next question
+    // Check if selected answer is correct by calling the quiz method `checkAnswer()` with the selected answer.
+
+    // Move to the next question by calling the quiz method `moveToNextQuestion()`.
+    // Show the next question by calling the function `showQuestion()`.
     choiceElements.forEach((choiceElement) => {
       if (choiceElement.checked) {
         const selectedAnswer = choiceElement.value;
         const isCorrect = quiz.checkAnswer(selectedAnswer);
         quiz.moveToNextQuestion();
 
-        showQuestion();
+        showQuestion(quiz.getCurrentQuestion().text, quiz.getCurrentQuestion().choices, quiz.getCurrentQuestionIndex(), quiz.getTotalQuestions());
       }
     })
   }
 
-
-
-
   function showResults() {
 
-    // YOUR CODE HERE:
-    //
     // 1. Hide the quiz view (div#quizView)
+    const quizView = document.getElementById('quizView');
     quizView.style.display = "none";
 
     // 2. Show the end view (div#endView)
+    const endView = document.getElementById('endView');
     endView.style.display = "flex";
 
     // 3. Update the result container (div#result) inner text to show the number of correct answers out of total questions
-    // resultContainer.innerText = `You scored 1 out of 1 correct answers!`;
-    // This value is hardcoded as a placeholder
-
-    const correctcheckAnswers = quiz.correctAnswers;
-    const totalQuestions = questions.length;
-    resultContainer.innerText = `You scored ${correctcheckAnswers} out of ${totalQuestions} correct answers!`;
+    const resultContainer = document.getElementById('result');
+    const correctAnswers = quiz.getCorrectAnswersCount();
+    const totalQuestions = quiz.getTotalQuestions();
+    resultContainer.innerText = `You scored ${correctAnswers} out of ${totalQuestions} correct answers!`;
   }
 
+  const restartB = document.getElementById('restartButton');
+  restartB.addEventListener('click', restartQuiz);
+
+  function restartQuiz() {
+    endView.style.display = 'none';
+    quizView.style.display = 'block';
+    quiz.resetQuiz();
+    showQuestion(quiz.getCurrentQuestion().text, quiz.getCurrentQuestion().choices, quiz.getCurrentQuestionIndex() + 1, quiz.getTotalQuestions());
+  }
 });

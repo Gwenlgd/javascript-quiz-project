@@ -7,6 +7,8 @@ class Quiz {
     this.currentQuestionIndex = 0;
   }
   getQuestion() {
+    // console.log(this.questions[this.currentQuestionIndex])
+
     return this.questions[this.currentQuestionIndex];
   }
   moveToNextQuestion() {
@@ -15,8 +17,8 @@ class Quiz {
   shuffleQuestions() {
     let currentIndex = this.questions.length - 1;
     while (currentIndex >= 0) {
-      let randomIndex = Math.floor(Math.random() * this.currentQuestionIndex);
-      let currentCell = this.questions[this.currentQuestionIndex];
+      let randomIndex = Math.floor(Math.random() * this.questions.length);
+      let currentCell = this.questions[currentIndex];
       let randomCell = this.questions[randomIndex];
 
       let copyTemp = currentCell;
@@ -28,6 +30,7 @@ class Quiz {
   checkAnswer(answer) {
     const currentQuestion = this.getQuestion()
     // console.log('answer', answer, currentQuestion)
+    // console.log(currentQuestion.answer, answer)
     if (currentQuestion.answer === answer) {
       this.correctAnswers++;
     }
