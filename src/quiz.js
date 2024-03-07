@@ -62,4 +62,11 @@ class Quiz {
 
     return sum / this.questions.length;
   }
+
+  // Added thursday
+  resetQuiz() {
+    this.currentQuestionIndex = 0;
+    this.correctAnswers = 0;
+    this.timeRemaining = this.duration;
+  }
 };

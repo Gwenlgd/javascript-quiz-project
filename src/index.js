@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const choiceContainer = document.querySelector("#choices");
   const nextButton = document.querySelector("#nextButton");
 
+
   // End view elements
   const resultContainer = document.querySelector("#result");
 
@@ -66,8 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   nextButton.addEventListener("click", nextButtonHandler);
 
-
-
   /************  FUNCTIONS  ************/
 
   // showQuestion() - Displays the current question and its choices
@@ -101,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const questionElement = document.getElementById('question');
     questionElement.textContent = question.text;
-    console.log(question);
+    // console.log(question);
 
     // 2. Update the green progress bar
     // Update the green progress bar (div#progressBar) width so that it shows the percentage of questions answered
@@ -194,4 +193,13 @@ document.addEventListener("DOMContentLoaded", () => {
     resultContainer.innerText = `You scored ${correctcheckAnswers} out of ${totalQuestions} correct answers!`;
   }
 
+  const restartBtn = document.querySelector("#restartButton");
+  restartBtn.addEventListener('click', restartQuiz);
+
+  function restartQuiz() {
+    endView.style.display = 'none';
+    quizView.style.display = 'block';
+    quiz.resetQuiz();
+    showQuestion();
+  }
 });
