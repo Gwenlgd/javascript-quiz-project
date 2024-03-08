@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const seconds = (quiz.timeRemaining % 60).toString().padStart(2, "0");
 
   // Display the time remaining in the time remaining container
-  const timeRemainingContainer = document.getElementById("timeRemaining");
+  const timeRemainingContainer = document.querySelector("#timeRemaining span");
   timeRemainingContainer.innerText = `${minutes}:${seconds}`;
 
   // Show first question
@@ -59,8 +59,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /************  TIMER  ************/
-
   let timer;
+  // TO REVIEW
+  // Start the timer
+  startTimer();
+
+
+  // Timer function
+  function startTimer() {
+    const timer = setInterval(() => {
+      quiz.timeRemaining.minutes--;
+      quiz.timeRemaining.seconds--;
+      const minutes = quiz.timeRemaining.minutes.toString().padStart(2, "0");
+      const seconds = quiz.timeRemaining.seconds.toString().padStart(2, "0");
+      timeRemainingContainer.textContent = `${minutes}:${seconds}`;
+
+      if (quiz.timeRemaining.minutes === 0 && quiz.timeRemaining.seconds === 0) {
+        clearInterval(timer);
+        timeRemainingContainer.textContent = "Time's up!";
+        endQuiz();
+      }
+      console.log
+    }, 1000);
+  }
+
+  function endQuiz() {
+  }
 
 
   /************  EVENT LISTENERS  ************/
@@ -202,4 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
     quiz.resetQuiz();
     showQuestion();
   }
+
+
+
 });
